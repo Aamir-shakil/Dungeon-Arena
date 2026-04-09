@@ -1,8 +1,10 @@
 package com.aamir.dungeonarena.main;
 
+import com.aamir.dungeonarena.battle.BattleManager;
 import com.aamir.dungeonarena.characters.Goblin;
 import com.aamir.dungeonarena.characters.Orc;
 import com.aamir.dungeonarena.characters.Player;
+import com.aamir.dungeonarena.battle.BattleManager;
 
 /**
  * Controls the initial startup flow of the application.
@@ -21,17 +23,8 @@ public class Game {
 
         Player player = new Player("Knight", 100, 20);
         Goblin goblin = new Goblin();
-        Orc orc = new Orc();
 
-        System.out.println("Player created:");
-        System.out.println(player);
-        System.out.println();
-
-        System.out.println("Enemies created:");
-        System.out.println(goblin);
-        System.out.println(orc);
-        System.out.println();
-
-        System.out.println("Base project structure is working.");
+        BattleManager battleManager = new BattleManager();
+        battleManager.startBattle(player, goblin);
     }
 }
