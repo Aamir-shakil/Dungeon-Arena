@@ -32,14 +32,20 @@ public class Game {
     }
 
     public Enemy createEnemy(int round) {
-        if (round == 1) {
-            return new Goblin();
-        } else if (round == 2) {
+    if (round == 1) {
+        return new Goblin();
+    } 
+    else if (round == 2) {
+        if (Math.random() < 0.5) {
             return new Orc();
         } else {
-            return new OrcBoss();
+            return new Goblin();
         }
+    } 
+    else {
+        return new OrcBoss();
     }
+}
 
     public Player getPlayer() {
         return player;
