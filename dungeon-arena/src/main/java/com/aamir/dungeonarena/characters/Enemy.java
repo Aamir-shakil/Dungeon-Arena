@@ -16,4 +16,13 @@ public abstract class Enemy extends Character {
     public Enemy(String name, int maxHealth, int attackPower) {
         super(name, maxHealth, attackPower);
     }
+
+    /**
+     * Returns a message describing the enemy's attack behaviour.
+     *
+     * @return enemy action message
+     */
+    public String getAttackMessage() {
+        return getName() + " attacks fiercely.";
+    }
 }

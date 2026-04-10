@@ -81,7 +81,7 @@ public class BattleManager {
         player.takeDamage(damage);
 
         updateModel(player, enemy, round,
-                enemy.getName() + " attacks " + player.getName() + " for " + damage + " damage.");
+        enemy.getAttackMessage() + " It deals " + damage + " damage to " + player.getName() + ".");
 
         player.setDefending(false);
     }
