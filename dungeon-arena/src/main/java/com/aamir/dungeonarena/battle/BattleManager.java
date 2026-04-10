@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 import com.aamir.dungeonarena.characters.Enemy;
 import com.aamir.dungeonarena.characters.Player;
+import com.aamir.dungeonarena.observer.BattleLogDisplay;
+import com.aamir.dungeonarena.observer.GameModel;
+import com.aamir.dungeonarena.observer.StatsDisplay;
 
 /**
  * Handles turn-based combat between the player and an enemy.
@@ -11,56 +14,33 @@ import com.aamir.dungeonarena.characters.Player;
 public class BattleManager {
 
     private final Scanner scanner = new Scanner(System.in);
+    private final GameModel gameModel;
 
-    /**
-     * Starts a battle between the player and a single enemy.
-     *
-     * @param player the player
-     * @param enemy the enemy
-     */
-    public void startBattle(Player player, Enemy enemy) {
-        printBattleIntro(enemy);
+    public BattleManager() {
+        gameModel = new GameModel();
+        gameModel.addObserver(new StatsDisplay());
+        gameModel.addObserver(new BattleLogDisplay());
+    }
 
-        int turnNumber = 1;
+    public void startBattle(Player player, Enemy enemy, int round) {
+        updateModel(player, enemy, round, "A wild " + enemy.getName() + " appears!");
 
         while (player.isAlive() && enemy.isAlive()) {
-            printTurnHeader(turnNumber);
-            displayStats(player, enemy);
-
-            playerTurn(player, enemy);
+            playerTurn(player, enemy, round);
 
             if (enemy.isAlive()) {
-                enemyTurn(player, enemy);
+                enemyTurn(player, enemy, round);
             }
-
-            System.out.println();
-            turnNumber++;
         }
 
-        printBattleResult(player, enemy);
+        if (player.isAlive()) {
+            updateModel(player, enemy, round, "Victory! You defeated the " + enemy.getName() + ".");
+        } else {
+            updateModel(player, enemy, round, "Defeat... " + player.getName() + " has fallen.");
+        }
     }
 
-    private void printBattleIntro(Enemy enemy) {
-        System.out.println("=================================");
-        System.out.println("Battle Start");
-        System.out.println("=================================");
-        System.out.println("A wild " + enemy.getName() + " appears!");
-        System.out.println();
-    }
-
-    private void printTurnHeader(int turnNumber) {
-        System.out.println("---------------------------------");
-        System.out.println("Turn " + turnNumber);
-        System.out.println("---------------------------------");
-    }
-
-    private void displayStats(Player player, Enemy enemy) {
-        System.out.println(player.getName() + " HP: " + player.getHealth() + "/" + player.getMaxHealth());
-        System.out.println(enemy.getName() + " HP: " + enemy.getHealth() + "/" + enemy.getMaxHealth());
-        System.out.println();
-    }
-
-    private void playerTurn(Player player, Enemy enemy) {
+    private void playerTurn(Player player, Enemy enemy, int round) {
         System.out.println("Choose action:");
         System.out.println("1. Attack");
         System.out.println("2. Defend");
@@ -70,31 +50,23 @@ public class BattleManager {
         if (choice == 1) {
             int damage = player.attack();
             enemy.takeDamage(damage);
-            System.out.println(player.getName() + " attacks " + enemy.getName() + " for " + damage + " damage.");
+            updateModel(player, enemy, round,
+                    player.getName() + " attacks " + enemy.getName() + " for " + damage + " damage.");
         } else {
             player.setDefending(true);
-            System.out.println(player.getName() + " takes a defensive stance.");
+            updateModel(player, enemy, round,
+                    player.getName() + " takes a defensive stance.");
         }
     }
 
-    private void enemyTurn(Player player, Enemy enemy) {
+    private void enemyTurn(Player player, Enemy enemy, int round) {
         int damage = enemy.attack();
         player.takeDamage(damage);
-        System.out.println(enemy.getName() + " attacks " + player.getName() + " for " + damage + " damage.");
+
+        updateModel(player, enemy, round,
+                enemy.getName() + " attacks " + player.getName() + " for " + damage + " damage.");
 
         player.setDefending(false);
-    }
-
-    private void printBattleResult(Player player, Enemy enemy) {
-        System.out.println("=================================");
-        System.out.println("Battle Result");
-        System.out.println("=================================");
-
-        if (player.isAlive()) {
-            System.out.println("Victory! You defeated the " + enemy.getName() + ".");
-        } else {
-            System.out.println("Defeat... " + player.getName() + " has fallen.");
-        }
     }
 
     private int readChoice() {
@@ -113,5 +85,18 @@ public class BattleManager {
 
             System.out.println("Invalid choice. Please enter 1 or 2.");
         }
+    }
+
+    private void updateModel(Player player, Enemy enemy, int round, String message) {
+        gameModel.updateStats(
+                player.getName(),
+                player.getHealth(),
+                player.getMaxHealth(),
+                enemy.getName(),
+                enemy.getHealth(),
+                enemy.getMaxHealth(),
+                round,
+                message
+        );
     }
 }

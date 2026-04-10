@@ -14,7 +14,7 @@ public class BattleState implements GameState {
         Enemy enemy = game.getCurrentEnemy();
         BattleManager battleManager = new BattleManager();
 
-        battleManager.startBattle(game.getPlayer(), enemy);
+        battleManager.startBattle(game.getPlayer(), enemy, game.getRound());
 
         if (game.getPlayer().isAlive()) {
             game.setState(new VictoryState());
