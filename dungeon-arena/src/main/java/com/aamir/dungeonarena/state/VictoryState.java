@@ -1,8 +1,14 @@
 package com.aamir.dungeonarena.state;
 
+import java.util.Scanner;
+
+import com.aamir.dungeonarena.decorator.ShieldBoostDecorator;
+import com.aamir.dungeonarena.decorator.StrengthBoostDecorator;
 import com.aamir.dungeonarena.main.Game;
 
 public class VictoryState implements GameState {
+
+    private final Scanner scanner = new Scanner(System.in);
 
     @Override
     public void handle(Game game) {
@@ -13,6 +19,23 @@ public class VictoryState implements GameState {
             System.out.println("You cleared the dungeon!");
             game.stop();
             return;
+        }
+
+        System.out.println("Choose a temporary buff for the next round:");
+        System.out.println("1. Strength Boost (+5 attack)");
+        System.out.println("2. Shield Boost (-5 incoming damage)");
+        System.out.print("Enter choice: ");
+
+        int choice = scanner.nextInt();
+
+        game.resetActivePlayer();
+
+        if (choice == 1) {
+            game.setActivePlayer(new StrengthBoostDecorator(game.getActivePlayer()));
+            System.out.println("Strength Boost applied.");
+        } else {
+            game.setActivePlayer(new ShieldBoostDecorator(game.getActivePlayer()));
+            System.out.println("Shield Boost applied.");
         }
 
         game.nextRound();

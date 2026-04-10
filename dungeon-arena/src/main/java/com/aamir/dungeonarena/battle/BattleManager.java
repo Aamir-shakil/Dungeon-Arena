@@ -4,14 +4,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.aamir.dungeonarena.characters.Enemy;
-import com.aamir.dungeonarena.characters.Player;
+import com.aamir.dungeonarena.decorator.Combatant;
 import com.aamir.dungeonarena.observer.BattleLogDisplay;
 import com.aamir.dungeonarena.observer.GameModel;
 import com.aamir.dungeonarena.observer.StatsDisplay;
 
-/**
- * Handles turn-based combat between the player and an enemy.
- */
 public class BattleManager {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -25,7 +22,7 @@ public class BattleManager {
         random = new Random();
     }
 
-    public void startBattle(Player player, Enemy enemy, int round) {
+    public void startBattle(Combatant player, Enemy enemy, int round) {
         updateModel(player, enemy, round, "A wild " + enemy.getName() + " appears!");
 
         while (player.isAlive() && enemy.isAlive()) {
@@ -43,7 +40,7 @@ public class BattleManager {
         }
     }
 
-    private void playerTurn(Player player, Enemy enemy, int round) {
+    private void playerTurn(Combatant player, Enemy enemy, int round) {
         System.out.println("Choose action:");
         System.out.println("1. Attack");
         System.out.println("2. Defend");
@@ -65,7 +62,7 @@ public class BattleManager {
         }
     }
 
-    private void performPowerAttack(Player player, Enemy enemy, int round) {
+    private void performPowerAttack(Combatant player, Enemy enemy, int round) {
         int hitChance = random.nextInt(100);
 
         if (hitChance < 70) {
@@ -79,7 +76,7 @@ public class BattleManager {
         }
     }
 
-    private void enemyTurn(Player player, Enemy enemy, int round) {
+    private void enemyTurn(Combatant player, Enemy enemy, int round) {
         int damage = enemy.attack();
         player.takeDamage(damage);
 
@@ -107,7 +104,7 @@ public class BattleManager {
         }
     }
 
-    private void updateModel(Player player, Enemy enemy, int round, String message) {
+    private void updateModel(Combatant player, Enemy enemy, int round, String message) {
         gameModel.updateStats(
                 player.getName(),
                 player.getHealth(),

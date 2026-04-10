@@ -4,25 +4,22 @@ import com.aamir.dungeonarena.characters.Enemy;
 import com.aamir.dungeonarena.characters.Goblin;
 import com.aamir.dungeonarena.characters.Orc;
 import com.aamir.dungeonarena.characters.Player;
+import com.aamir.dungeonarena.decorator.Combatant;
 import com.aamir.dungeonarena.state.GameState;
 import com.aamir.dungeonarena.state.MenuState;
 
-/**
- * Controls the main game flow and context for the State pattern.
- */
 public class Game {
 
     private Player player;
+    private Combatant activePlayer;
     private Enemy currentEnemy;
     private GameState currentState;
     private boolean running;
     private int round;
 
-    /**
-     * Starts the application.
-     */
     public void start() {
         player = new Player("Knight", 100, 20);
+        activePlayer = player;
         round = 1;
         currentEnemy = createEnemy(round);
         currentState = new MenuState();
@@ -39,12 +36,20 @@ public class Game {
         } else if (round == 2) {
             return new Orc();
         } else {
-            return new Orc(); // stronger later if we want
+            return new Orc();
         }
     }
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Combatant getActivePlayer() {
+        return activePlayer;
+    }
+
+    public void setActivePlayer(Combatant activePlayer) {
+        this.activePlayer = activePlayer;
     }
 
     public Enemy getCurrentEnemy() {
@@ -63,6 +68,10 @@ public class Game {
         this.currentState = currentState;
     }
 
+    public void stop() {
+        running = false;
+    }
+
     public int getRound() {
         return round;
     }
@@ -72,8 +81,7 @@ public class Game {
         currentEnemy = createEnemy(round);
     }
 
-    public void stop() {
-        running = false;
+    public void resetActivePlayer() {
+        activePlayer = player;
     }
-
 }

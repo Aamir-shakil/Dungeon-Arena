@@ -1,0 +1,65 @@
+package com.aamir.dungeonarena.decorator;
+
+public abstract class CharacterDecorator implements Combatant {
+
+    protected Combatant wrappedCharacter;
+
+    public CharacterDecorator(Combatant wrappedCharacter) {
+        this.wrappedCharacter = wrappedCharacter;
+    }
+
+    @Override
+    public String getName() {
+        return wrappedCharacter.getName();
+    }
+
+    @Override
+    public int getHealth() {
+        return wrappedCharacter.getHealth();
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return wrappedCharacter.getMaxHealth();
+    }
+
+    @Override
+    public int getAttackPower() {
+        return wrappedCharacter.getAttackPower();
+    }
+
+    @Override
+    public boolean isDefending() {
+        return wrappedCharacter.isDefending();
+    }
+
+    @Override
+    public void setDefending(boolean defending) {
+        wrappedCharacter.setDefending(defending);
+    }
+
+    @Override
+    public void setAttackPower(int attackPower) {
+        wrappedCharacter.setAttackPower(attackPower);
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        wrappedCharacter.takeDamage(damage);
+    }
+
+    @Override
+    public void heal(int amount) {
+        wrappedCharacter.heal(amount);
+    }
+
+    @Override
+    public boolean isAlive() {
+        return wrappedCharacter.isAlive();
+    }
+
+    @Override
+    public int attack() {
+        return wrappedCharacter.attack();
+    }
+}

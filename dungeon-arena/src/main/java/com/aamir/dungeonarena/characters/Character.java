@@ -1,11 +1,12 @@
 package com.aamir.dungeonarena.characters;
+import com.aamir.dungeonarena.decorator.Combatant;
 
 /**
  * Abstract base class for all combat characters in the game.
  * It provides shared state and behaviour such as health, attack,
  * damage handling, and defensive stance.
  */
-public abstract class Character {
+public abstract class Character implements Combatant {
     private String name;
     private int maxHealth;
     private int health;
@@ -15,8 +16,8 @@ public abstract class Character {
     /**
      * Constructs a character with a name, maximum health, and attack power.
      *
-     * @param name the character's name
-     * @param maxHealth the maximum and starting health
+     * @param name        the character's name
+     * @param maxHealth   the maximum and starting health
      * @param attackPower the base attack damage
      */
     public Character(String name, int maxHealth, int attackPower) {

@@ -3,10 +3,8 @@ package com.aamir.dungeonarena.state;
 import com.aamir.dungeonarena.battle.BattleManager;
 import com.aamir.dungeonarena.characters.Enemy;
 import com.aamir.dungeonarena.main.Game;
+import com.aamir.dungeonarena.decorator.Combatant;
 
-/**
- * Handles the main battle phase.
- */
 public class BattleState implements GameState {
 
     @Override
@@ -14,9 +12,9 @@ public class BattleState implements GameState {
         Enemy enemy = game.getCurrentEnemy();
         BattleManager battleManager = new BattleManager();
 
-        battleManager.startBattle(game.getPlayer(), enemy, game.getRound());
+        battleManager.startBattle(game.getActivePlayer(), enemy, game.getRound());
 
-        if (game.getPlayer().isAlive()) {
+        if (game.getActivePlayer().isAlive()) {
             game.setState(new VictoryState());
         } else {
             game.setState(new GameOverState());
