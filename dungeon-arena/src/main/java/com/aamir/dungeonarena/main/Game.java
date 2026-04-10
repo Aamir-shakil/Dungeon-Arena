@@ -36,7 +36,7 @@ public class Game {
         } else if (round == 2) {
             return new Orc();
         } else {
-            return new Orc();
+            return new OrcBoss();
         }
     }
 

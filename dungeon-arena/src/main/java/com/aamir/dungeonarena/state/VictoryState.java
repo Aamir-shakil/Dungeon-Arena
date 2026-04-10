@@ -13,15 +13,20 @@ public class VictoryState implements GameState {
     @Override
     public void handle(Game game) {
         System.out.println();
-        System.out.println("You won round " + game.getRound() + "!");
+        System.out.println("=================================");
+        System.out.println("Round Cleared");
+        System.out.println("=================================");
+        System.out.println("You won round " + game.getRound() + ".");
 
         if (game.getRound() >= 3) {
-            System.out.println("You cleared the dungeon!");
+            System.out.println("You cleared the dungeon and defeated every enemy!");
+            System.out.println("Final HP: " + game.getActivePlayer().getHealth() + "/" + game.getActivePlayer().getMaxHealth());
             game.stop();
             return;
         }
 
-        System.out.println("Choose a temporary buff for the next round:");
+        System.out.println();
+        System.out.println("Choose one buff for the next round only:");
         System.out.println("1. Strength Boost (+5 attack)");
         System.out.println("2. Shield Boost (-5 incoming damage)");
         System.out.print("Enter choice: ");
@@ -32,10 +37,10 @@ public class VictoryState implements GameState {
 
         if (choice == 1) {
             game.setActivePlayer(new StrengthBoostDecorator(game.getActivePlayer()));
-            System.out.println("Strength Boost applied.");
+            System.out.println("Strength Boost applied for the next round.");
         } else {
             game.setActivePlayer(new ShieldBoostDecorator(game.getActivePlayer()));
-            System.out.println("Shield Boost applied.");
+            System.out.println("Shield Boost applied for the next round.");
         }
 
         game.nextRound();
