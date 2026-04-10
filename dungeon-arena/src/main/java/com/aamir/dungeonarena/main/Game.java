@@ -7,6 +7,7 @@ import com.aamir.dungeonarena.characters.Player;
 import com.aamir.dungeonarena.decorator.Combatant;
 import com.aamir.dungeonarena.state.GameState;
 import com.aamir.dungeonarena.state.MenuState;
+import com.aamir.dungeonarena.characters.OrcBoss;
 
 public class Game {
 
