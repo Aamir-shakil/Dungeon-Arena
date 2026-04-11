@@ -4,8 +4,16 @@ import com.aamir.dungeonarena.battle.BattleManager;
 import com.aamir.dungeonarena.characters.Enemy;
 import com.aamir.dungeonarena.main.Game;
 
+/**
+ * State responsible for handling the battle phase of the game.
+ * Displays round information and starts combat.
+ */
 public class BattleState implements GameState {
 
+    /**
+     * Executes the battle state logic.
+     * Starts combat and transitions to the next state depending on the outcome.
+     */
     @Override
     public void handle(Game game) {
         Enemy enemy = game.getCurrentEnemy();

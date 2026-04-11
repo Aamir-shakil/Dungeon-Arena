@@ -4,10 +4,17 @@ import java.util.Scanner;
 
 import com.aamir.dungeonarena.main.Game;
 
+/**
+ * State that displays game instructions and controls.
+ * Transitions to the battle state once the player is ready.
+ */
 public class InstructionsState implements GameState {
 
     private final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Displays instructions and waits for user input before starting the game.
+     */
     @Override
     public void handle(Game game) {
 

@@ -3,12 +3,18 @@ package com.aamir.dungeonarena.main;
 import com.aamir.dungeonarena.characters.Enemy;
 import com.aamir.dungeonarena.characters.Goblin;
 import com.aamir.dungeonarena.characters.Orc;
+import com.aamir.dungeonarena.characters.OrcBoss;
 import com.aamir.dungeonarena.characters.Player;
 import com.aamir.dungeonarena.decorator.Combatant;
 import com.aamir.dungeonarena.state.GameState;
 import com.aamir.dungeonarena.state.MenuState;
-import com.aamir.dungeonarena.characters.OrcBoss;
 
+/**
+ * Main game context class.
+ * 
+ * Controls game flow, manages rounds, enemies, and player state.
+ * Acts as the context for the State pattern.
+ */
 public class Game {
 
     private Player player;
@@ -18,6 +24,9 @@ public class Game {
     private boolean running;
     private int round;
 
+    /**
+     * Starts the game loop.
+     */
     public void start() {
         player = new Player("Knight", 100, 20);
         activePlayer = player;
@@ -31,21 +40,22 @@ public class Game {
         }
     }
 
+    /**
+     * Creates an enemy based on the current round.
+     */
     public Enemy createEnemy(int round) {
-    if (round == 1) {
-        return new Goblin();
-    } 
-    else if (round == 2) {
-        if (Math.random() < 0.5) {
-            return new Orc();
-        } else {
+        if (round == 1) {
             return new Goblin();
+        } else if (round == 2) {
+            if (Math.random() < 0.5) {
+                return new Orc();
+            } else {
+                return new Goblin();
+            }
+        } else {
+            return new OrcBoss();
         }
-    } 
-    else {
-        return new OrcBoss();
     }
-}
 
     public Player getPlayer() {
         return player;
@@ -75,6 +85,9 @@ public class Game {
         this.currentState = currentState;
     }
 
+    /**
+     * Stops the main game loop.
+     */
     public void stop() {
         running = false;
     }
@@ -83,11 +96,17 @@ public class Game {
         return round;
     }
 
+    /**
+     * Advances to the next round and creates a new enemy.
+     */
     public void nextRound() {
         round++;
         currentEnemy = createEnemy(round);
     }
 
+    /**
+     * Resets the player to the base (non-decorated) version.
+     */
     public void resetActivePlayer() {
         activePlayer = player;
     }

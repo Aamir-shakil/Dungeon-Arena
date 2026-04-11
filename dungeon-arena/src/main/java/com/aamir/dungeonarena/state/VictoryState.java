@@ -6,10 +6,17 @@ import com.aamir.dungeonarena.decorator.ShieldBoostDecorator;
 import com.aamir.dungeonarena.decorator.StrengthBoostDecorator;
 import com.aamir.dungeonarena.main.Game;
 
+/**
+ * State representing a successful round completion.
+ * Allows the player to choose a temporary buff before the next round.
+ */
 public class VictoryState implements GameState {
 
     private final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Handles victory logic, buff selection, and progression to next round.
+     */
     @Override
     public void handle(Game game) {
         System.out.println();
@@ -20,7 +27,10 @@ public class VictoryState implements GameState {
 
         if (game.getRound() >= 3) {
             System.out.println("You cleared the dungeon and defeated every enemy!");
-            System.out.println("Final HP: " + game.getActivePlayer().getHealth() + "/" + game.getActivePlayer().getMaxHealth());
+            System.out.println(
+                "Final HP: " + game.getActivePlayer().getHealth() + "/" +
+                game.getActivePlayer().getMaxHealth()
+            );
             game.stop();
             return;
         }
@@ -36,10 +46,14 @@ public class VictoryState implements GameState {
         game.resetActivePlayer();
 
         if (choice == 1) {
-            game.setActivePlayer(new StrengthBoostDecorator(game.getActivePlayer()));
+            game.setActivePlayer(
+                new StrengthBoostDecorator(game.getActivePlayer())
+            );
             System.out.println("Strength Boost applied for the next round.");
         } else {
-            game.setActivePlayer(new ShieldBoostDecorator(game.getActivePlayer()));
+            game.setActivePlayer(
+                new ShieldBoostDecorator(game.getActivePlayer())
+            );
             System.out.println("Shield Boost applied for the next round.");
         }
 

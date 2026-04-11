@@ -4,10 +4,17 @@ import java.util.Scanner;
 
 import com.aamir.dungeonarena.main.Game;
 
+/**
+ * State representing the main menu of the game.
+ * Allows the player to start the game, view instructions, or exit.
+ */
 public class MenuState implements GameState {
 
     private final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Displays the menu and handles user selection.
+     */
     @Override
     public void handle(Game game) {
         System.out.println("=================================");

@@ -1,9 +1,16 @@
 package com.aamir.dungeonarena.decorator;
 
+/**
+ * Base decorator class for modifying Combatant behaviour at runtime.
+ * Delegates all calls to the wrapped combatant by default.
+ */
 public abstract class CharacterDecorator implements Combatant {
 
     protected Combatant wrappedCharacter;
 
+    /**
+     * Wraps a combatant to extend its behaviour.
+     */
     public CharacterDecorator(Combatant wrappedCharacter) {
         this.wrappedCharacter = wrappedCharacter;
     }

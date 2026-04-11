@@ -9,12 +9,19 @@ import com.aamir.dungeonarena.observer.BattleLogDisplay;
 import com.aamir.dungeonarena.observer.GameModel;
 import com.aamir.dungeonarena.observer.StatsDisplay;
 
+/**
+ * Handles turn-based combat between the player and an enemy.
+ * Manages player actions, enemy turns, and observer updates.
+ */
 public class BattleManager {
 
     private final Scanner scanner = new Scanner(System.in);
     private final GameModel gameModel;
     private final Random random;
 
+    /**
+     * Creates a BattleManager and registers observers.
+     */
     public BattleManager() {
         gameModel = new GameModel();
         gameModel.addObserver(new StatsDisplay());
@@ -22,6 +29,9 @@ public class BattleManager {
         random = new Random();
     }
 
+    /**
+     * Runs a full battle until either the player or enemy is defeated.
+     */
     public void startBattle(Combatant player, Enemy enemy, int round) {
         updateModel(player, enemy, round, "A wild " + enemy.getName() + " appears!");
 
@@ -34,12 +44,17 @@ public class BattleManager {
         }
 
         if (player.isAlive()) {
-            updateModel(player, enemy, round, "Victory! You defeated the " + enemy.getName() + ".");
+            updateModel(player, enemy, round,
+                    "Victory! You defeated the " + enemy.getName() + ".");
         } else {
-            updateModel(player, enemy, round, "Defeat... " + player.getName() + " has fallen.");
+            updateModel(player, enemy, round,
+                    "Defeat... " + player.getName() + " has fallen.");
         }
     }
 
+    /**
+     * Handles the player's turn and chosen action.
+     */
     private void playerTurn(Combatant player, Enemy enemy, int round) {
         System.out.println("Choose action:");
         System.out.println("1. Attack");
@@ -52,7 +67,8 @@ public class BattleManager {
             int damage = player.attack();
             enemy.takeDamage(damage);
             updateModel(player, enemy, round,
-                    player.getName() + " attacks " + enemy.getName() + " for " + damage + " damage.");
+                    player.getName() + " attacks " + enemy.getName() +
+                    " for " + damage + " damage.");
         } else if (choice == 2) {
             player.setDefending(true);
             updateModel(player, enemy, round,
@@ -62,6 +78,9 @@ public class BattleManager {
         }
     }
 
+    /**
+     * Executes a high-risk, high-damage power attack.
+     */
     private void performPowerAttack(Combatant player, Enemy enemy, int round) {
         int hitChance = random.nextInt(100);
 
@@ -69,23 +88,32 @@ public class BattleManager {
             int damage = player.attack() + 10;
             enemy.takeDamage(damage);
             updateModel(player, enemy, round,
-                    player.getName() + " lands a Power Attack on " + enemy.getName() + " for " + damage + " damage.");
+                    player.getName() + " lands a Power Attack on " +
+                    enemy.getName() + " for " + damage + " damage.");
         } else {
             updateModel(player, enemy, round,
                     player.getName() + " uses Power Attack but misses.");
         }
     }
 
+    /**
+     * Handles the enemy's turn.
+     */
     private void enemyTurn(Combatant player, Enemy enemy, int round) {
         int damage = enemy.attack();
         player.takeDamage(damage);
 
         updateModel(player, enemy, round,
-        enemy.getAttackMessage() + " It deals " + damage + " damage to " + player.getName() + ".");
+                enemy.getAttackMessage() +
+                " It deals " + damage +
+                " damage to " + player.getName() + ".");
 
         player.setDefending(false);
     }
 
+    /**
+     * Reads and validates the player's action choice.
+     */
     private int readChoice() {
         while (true) {
             System.out.print("Enter choice: ");
@@ -104,6 +132,9 @@ public class BattleManager {
         }
     }
 
+    /**
+     * Updates the observable model with latest battle data.
+     */
     private void updateModel(Combatant player, Enemy enemy, int round, String message) {
         gameModel.updateStats(
                 player.getName(),
